@@ -27,7 +27,12 @@ class Signup(Resource):
        return {'error': 'Unproccessable Entity'}, 422
     
 class CheckSession(Resource):
-    pass
+  
+  def get(self):
+    if session['user_id']:
+      user = User.query.filter(User.id == session['user_id']).first()
+      return user.to_dict(), 200
+    return {}, 401
 
 class Login(Resource):
     pass
