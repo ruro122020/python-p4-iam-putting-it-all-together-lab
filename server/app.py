@@ -50,7 +50,12 @@ class Login(Resource):
     
 
 class Logout(Resource):
-    pass
+  def delete(self):
+    if session.get('user_id'):
+      session['user_id'] = None
+      return {}, 204
+    
+    return {'error': 'not logged in'}, 401
 
 class RecipeIndex(Resource):
     pass
