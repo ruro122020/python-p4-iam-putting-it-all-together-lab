@@ -38,7 +38,7 @@ class Recipe(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     instructions = db.Column(db.String, db.CheckConstraint('instructions < 50'), nullable=False)
-    minutes_to_complete = db.Column(db.Integer, nullable=False)
+    minutes_to_complete = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     #relationships
