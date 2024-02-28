@@ -66,6 +66,28 @@ class RecipeIndex(Resource):
     user_recipes = [recipe.to_dict() for recipe in user.recipes]
     return user_recipes, 200
       
+  def post(self):
+    if not session.get('user_id'):
+      return {'error': 'User not authorized'}, 401
+    
+    json = request.get_json()
+    try:
+      new_recipe = Recipe(
+        title=json['title'],
+        instructions=json['instructions'],
+        minutes_to_complete=json['minutes_to_complete'],
+        user_id=session.get('user_id'))
+  
+      db.session.add(new_recipe)
+      db.session.commit()
+      return new_recipe.to_dict(), 201
+    except IntegrityError:
+      return {'error': 'Unproccessable Entity'}, 422
+
+
+
+
+
 
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
